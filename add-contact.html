@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+    <head>
+
+    </head>
+    <body>
+        <br/>
+        <form id="editForm">
+            <lable for="firstname">First name</lable>
+            <input type="text" name="firstname" id="firstname"><br/>
+            <lable for="lastname">Last name</lable>
+            <input type="text" name="lastname" id="lastname"><br/>
+            <lable for="mobile">Mobile</label>
+            <input type="text" name="mobile" id="mobile"><br/>
+            <lable for="email">Email</lable>
+            <input type="text" name="email" id="email"><br/>
+            <lable for="avatar">Select a file</lable><br/>
+            <input type="text" name="avatar" id="avatar"><br/>
+            <button type="submit" id="submitForm">Submit</button>   
+        </form>
+        <br/>
+        <button id="homeLink" type="button">Home</button>
+        
+        
+        <script src="config.js"></script>
+        <script>
+            document.getElementById("submitForm").addEventListener('click', submitForm)
+            document.getElementById("homeLink").addEventListener('click', homeLink);
+
+            function submitForm(e){
+                e.preventDefault();                           //e. this parameter is to prevent the default behaviour, when you hit the submit of a form the form reloads the page so we wana prevent the page from reloading
+
+                const form = new FormData(document.querySelector('#editForm'));
+                form.append('apiKey', apiKey);
+
+                fetch(rootPath + 'controller/insert-contact/', {
+                    method: 'POST',
+                    headers: {'Accept': 'application/json, *.*'},
+                    body: form
+                })
+                .then(function(response){
+                    return response.text();
+                })
+                .then(function(data){
+                    if(data =="1"){
+                        alert("Contact added");
+                        homeLink();
+                    } else{
+                        alert(data);
+                        homeLink();
+                    }
+                })
+
+            }
+
+//This function is a JS function that simply opens up a new window, the '_self' parameter means that it should open in the same window not in new window on browser           
+            function homeLink(){
+                window.open("index.html", "_self");
+            }
+
+
+
+        </script>
+    </body>
+
+
+</html>
